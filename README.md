@@ -28,10 +28,10 @@ alt="C++">
 <!-- stats -->
 <a href="https://github.com/vn7n24fzkq/github-profile-summary-cards">
 <p align="center">
-<img width="60%" alt="Profile Details" src="http://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=ciallo-dev&theme=nord_dark" />
-<img width="30%" alt="Profile Details" src="http://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=ciallo-dev&theme=nord_dark" />
-<img width="30%" alt="Profile Details" src="http://github-profile-summary-cards.vercel.app/api/cards/most-commit-language?username=ciallo-dev&theme=nord_dark" />
-<img width="30%" alt="Profile Details" src="http://github-profile-summary-cards.vercel.app/api/cards/stats?username=ciallo-dev&theme=nord_dark" />
-<img width="30%" alt="Profile Details" src="http://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=ciallo-dev&theme=nord_dark&utcOffset=8" />
+<img width="60%" alt="Profile Details" src="http://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=ciallo-dev&theme=tokyonight" />
+<img width="30%" alt="Profile Details" src="http://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=ciallo-dev&theme=tokyonight" />
+<img width="30%" alt="Profile Details" src="http://github-profile-summary-cards.vercel.app/api/cards/most-commit-language?username=ciallo-dev&theme=tokyonight" />
+<img width="30%" alt="Profile Details" src="http://github-profile-summary-cards.vercel.app/api/cards/stats?username=ciallo-dev&theme=tokyonight" />
+<img width="30%" alt="Profile Details" src="http://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=ciallo-dev&theme=tokyonight&utcOffset=8" />
 </p>
 </a>
