@@ -1,5 +1,5 @@
 <h2 align="center">Hi, I'm ciallo-dev.</h2>
-<em><h5 align="center"> 我是傻逼.</h5></em>
+<em><h5 align="center">Genshin Impact 启动.</h5></em>
 
 <!-- systems -->
 <p align="center">
