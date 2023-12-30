@@ -32,7 +32,7 @@ alt="C++">
 <!-- stats -->
 <a href="https://github.com/vn7n24fzkq/github-profile-summary-cards">
 <p align="center">
-<img width="60%" alt="Profile Details" src="https://raw.githubusercontent.com/ciallo-dev/ciallo-dev/main/profile-summary-card-output/2077/0-profile-details.svg" />
+<img width="60%" alt="Profile Details" src="https://raw.githubusercontent.com/ciallo-dev/ciallo-dev/main/profile-summary-card-output/algolia/0-profile-details.svg" />
 <img width="30%" alt="Profile Details" src="http://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=ciallo-dev&count_private=true&theme=algolia" />
 <img width="30%" alt="Profile Details" src="http://github-profile-summary-cards.vercel.app/api/cards/most-commit-language?username=ciallo-dev&count_private=true&theme=algolia" />
 <img width="30%" alt="Profile Details" src="http://github-profile-summary-cards.vercel.app/api/cards/stats?username=ciallo-dev&count_private=true&theme=algolia" />
