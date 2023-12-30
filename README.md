@@ -35,7 +35,7 @@ alt="C++">
 <img width="60%" alt="Profile Details" src="https://raw.githubusercontent.com/ciallo-dev/ciallo-dev/main/profile-summary-card-output/algolia/0-profile-details.svg" />
 <img width="30%" alt="Profile Details" src="http://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=ciallo-dev&count_private=true&theme=algolia" />
 <img width="30%" alt="Profile Details" src="http://github-profile-summary-cards.vercel.app/api/cards/most-commit-language?username=ciallo-dev&count_private=true&theme=algolia" />
-<img width="30%" alt="Profile Details" src="http://github-profile-summary-cards.vercel.app/api/cards/stats?username=ciallo-dev&count_private=true&theme=algolia" />
-<img width="30%" alt="Profile Details" src="http://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=ciallo-dev&count_private=true&theme=algolia&utcOffset=8" 
+<img width="30%" alt="Profile Details" src="https://raw.githubusercontent.com/ciallo-dev/ciallo-dev/main/profile-summary-card-output/algolia/3-stats.svg" />
+<img width="30%" alt="Profile Details" src="https://raw.githubusercontent.com/ciallo-dev/ciallo-dev/main/profile-summary-card-output/algolia/4-productive-time.svg" 
 </p>
 </a>
