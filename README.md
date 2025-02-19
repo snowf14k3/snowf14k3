@@ -9,11 +9,14 @@ alt="Systems"><img
 src="https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white"
 alt="Windows"/><img
 src="https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white"
-alt="android"/><img
-src="https://img.shields.io/badge/Apple-white?style=for-the-badge&logo=apple&logoColor=gray"
-alt="apple"/>
-  
-  
+alt="android"/>  
+</p>
+
+
+<p align="center">
+<a href="http://blog.snowflak3.icu"><img
+src="https://img.shields.io/badge/Blog-white?style=for-the-badge&logo=blog&logoColor=gray"
+alt="blog"/></a>
 </p>
 
 <!-- languages -->
