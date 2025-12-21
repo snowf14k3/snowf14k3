@@ -3,7 +3,7 @@
 
 <!-- systems -->
 <p align="center">
-<a href="http://blog.snowflak3.icu"><img
+<a href="http://blog.cutebaka.cloud"><img
 src="https://img.shields.io/badge/Blog-white?style=for-the-badge&logo=blog&logoColor=gray"
 alt="blog"/></a>
 </p>
