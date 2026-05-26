@@ -1,5 +1,5 @@
 <h2 align="center">Hi, I'm 0x0AB8.</h2>
-<em><h5 align="center">一个什么都不会的菜鸡,菜的飞起.</h5></em>
+<em><h5 align="center">just a noob guy.</h5></em>
 
 <!-- systems -->
 <p align="center">
