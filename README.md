@@ -24,10 +24,10 @@ alt="vuedotjs">
 <!-- stats -->
 <a>
 <p align="center">
-<img width="60%" alt="Profile Details" src="https://raw.githubusercontent.com/snowf14k3/snowf14k3/main/profile-summary-card-output/transparent/0-profile-details.svg" />
-<img width="30%" alt="Profile Details" src="https://raw.githubusercontent.com/snowf14k3/snowf14k3/main/profile-summary-card-output/transparent/1-repos-per-language.svg" />
-<img width="30%" alt="Profile Details" src="https://raw.githubusercontent.com/snowf14k3/snowf14k3/main/profile-summary-card-output/transparent/2-most-commit-language.svg" />
-<img width="30%" alt="Profile Details" src="https://raw.githubusercontent.com/snowf14k3/snowf14k3/main/profile-summary-card-output/transparent/3-stats.svg" />
-<img width="30%" alt="Profile Details" src="https://raw.githubusercontent.com/snowf14k3/snowf14k3/main/profile-summary-card-output/transparent/4-productive-time.svg" />
+<img width="60%" alt="Profile Details" src="https://proxy.cutebaka.cloud/https://raw.githubusercontent.com/snowf14k3/snowf14k3/main/profile-summary-card-output/transparent/0-profile-details.svg" />
+<img width="30%" alt="Profile Details" src="https://proxy.cutebaka.cloud/https://raw.githubusercontent.com/snowf14k3/snowf14k3/main/profile-summary-card-output/transparent/1-repos-per-language.svg" />
+<img width="30%" alt="Profile Details" src="https://proxy.cutebaka.cloud/https://raw.githubusercontent.com/snowf14k3/snowf14k3/main/profile-summary-card-output/transparent/2-most-commit-language.svg" />
+<img width="30%" alt="Profile Details" src="https://proxy.cutebaka.cloud/https://raw.githubusercontent.com/snowf14k3/snowf14k3/main/profile-summary-card-output/transparent/3-stats.svg" />
+<img width="30%" alt="Profile Details" src="https://proxy.cutebaka.cloud/https://raw.githubusercontent.com/snowf14k3/snowf14k3/main/profile-summary-card-output/transparent/4-productive-time.svg" />
 </p>
 </a>
