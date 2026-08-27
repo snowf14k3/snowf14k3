@@ -71,25 +71,6 @@ function sumContributions(weeks) {
   );
 }
 
-async function embedImage(url) {
-  const response = await fetch(url, {
-    headers: { "User-Agent": `${username}-profile-renderer` },
-    signal: AbortSignal.timeout(20_000),
-  });
-
-  if (!response.ok) {
-    throw new Error(`Avatar request failed with HTTP ${response.status}.`);
-  }
-
-  const contentType = response.headers.get("content-type")?.split(";")[0] || "image/png";
-  if (!contentType.startsWith("image/")) {
-    throw new Error(`Avatar request returned unexpected content type ${contentType}.`);
-  }
-
-  const bytes = Buffer.from(await response.arrayBuffer());
-  return `data:${contentType};base64,${bytes.toString("base64")}`;
-}
-
 async function fetchProfileData() {
   if (!token) {
     throw new Error("GH_TOKEN is required. Set it from the SUMMARY_GITHUB_TOKEN repository secret.");
@@ -102,7 +83,6 @@ async function fetchProfileData() {
   const query = `
     query ProfileStatus($login: String!, $from: DateTime!, $to: DateTime!) {
       user(login: $login) {
-        avatarUrl(size: 240)
         createdAt
         repositories(
           first: 100
@@ -126,6 +106,15 @@ async function fetchProfileData() {
               primaryLanguage {
                 name
                 color
+              }
+              languages(first: 20, orderBy: { field: SIZE, direction: DESC }) {
+                edges {
+                  size
+                  node {
+                    name
+                    color
+                  }
+                }
               }
             }
             contributions {
@@ -180,9 +169,21 @@ async function fetchProfileData() {
   }
 
   const languageMap = new Map();
+  const profileLanguageMap = new Map();
   const contributionsCollection = user.contributionsCollection;
 
   for (const { repository, contributions } of contributionsCollection.commitContributionsByRepository) {
+    for (const { size, node: repositoryLanguage } of repository.languages.edges) {
+      if (!repositoryLanguage?.name || repositoryLanguage.name.toLowerCase() === "html") continue;
+      const current = profileLanguageMap.get(repositoryLanguage.name) || {
+        size: 0,
+        color: repositoryLanguage.color,
+      };
+      current.size += size;
+      current.color ||= repositoryLanguage.color;
+      profileLanguageMap.set(repositoryLanguage.name, current);
+    }
+
     const language = repository.primaryLanguage;
     if (!language?.name || language.name.toLowerCase() === "html") continue;
     const current = languageMap.get(language.name) || { commits: 0, color: language.color };
@@ -195,12 +196,14 @@ async function fetchProfileData() {
     .map(([name, { commits, color }]) => ({ name, commits, color }))
     .sort((left, right) => right.commits - left.commits)
     .slice(0, 5);
+  const profileLanguages = [...profileLanguageMap]
+    .map(([name, { size, color }]) => ({ name, size, color }))
+    .sort((left, right) => right.size - left.size)
+    .slice(0, 10);
 
   const weeks = contributionsCollection.contributionCalendar.weeks;
-  const avatar = await embedImage(user.avatarUrl);
 
   return {
-    avatar,
     contributions: sumContributions(weeks),
     repositories: user.repositories.totalCount,
     stars: user.repositories.nodes.reduce((total, repository) => total + repository.stargazerCount, 0),
@@ -211,6 +214,7 @@ async function fetchProfileData() {
     joinedYear: new Date(user.createdAt).getUTCFullYear(),
     weeks,
     languages,
+    profileLanguages,
   };
 }
 
@@ -225,7 +229,7 @@ function renderContributionCurve(weeks, theme) {
   const weeklyTotals = weeks.map(({ contributionDays }) =>
     contributionDays.reduce((total, { contributionCount }) => total + contributionCount, 0),
   );
-  const chart = { x: 415, y: 176, width: 467, height: 65 };
+  const chart = { x: 435, y: 178, width: 443, height: 65 };
   const maximum = Math.max(1, ...weeklyTotals);
   const points = weeklyTotals.map((total, index) => ({
     x: chart.x + (index / Math.max(1, weeklyTotals.length - 1)) * chart.width,
@@ -242,12 +246,12 @@ function renderContributionCurve(weeks, theme) {
       if (!date) return "";
       const label = date.slice(2, 7).replace("-", "/");
       const x = chart.x + (index / Math.max(1, weeks.length - 1)) * chart.width;
-      return `<text x="${x.toFixed(2)}" y="258" text-anchor="middle" class="utility" fill="${theme.muted}">${label}</text>`;
+      const anchor = index === 0 ? "start" : index === weeks.length - 1 ? "end" : "middle";
+      return `<text x="${x.toFixed(2)}" y="258" text-anchor="${anchor}" class="utility" fill="${theme.muted}">${label}</text>`;
     })
     .join("");
 
   return `
-    <text x="882" y="166" text-anchor="end" class="utility" fill="${theme.muted}">contributions / last 365 days</text>
     <path d="${area}" fill="${theme.green}" fill-opacity="0.16" />
     <path d="${line}" fill="none" stroke="${theme.green}" stroke-width="2" />
     <line x1="${chart.x}" y1="${chart.y + chart.height}" x2="${chart.x + chart.width}" y2="${chart.y + chart.height}" stroke="${theme.muted}" stroke-opacity="0.45" />
@@ -257,7 +261,7 @@ function renderContributionCurve(weeks, theme) {
 
 function renderLanguageBar(languages, theme) {
   if (languages.length === 0) {
-    return `<text x="18" y="309" class="body" fill="${theme.muted}">(no language data)</text>`;
+    return `<text x="18" y="323" class="body" fill="${theme.muted}">(no language data)</text>`;
   }
 
   const total = languages.reduce((sum, { commits }) => sum + commits, 0);
@@ -268,7 +272,7 @@ function renderLanguageBar(languages, theme) {
       const filledBar = "█".repeat(filled);
       const emptyBar = "█".repeat(28 - filled);
       const languageColor = /^#[0-9a-f]{6}$/i.test(color || "") ? color : theme.green;
-      const y = 309 + index * 21;
+      const y = 323 + index * 20;
       return `
         <text x="18" y="${y}" class="body" fill="${theme.text}">${escapeXml(name)}</text>
         <text x="145" y="${y}" class="body"><tspan fill="${languageColor}">${filledBar}</tspan><tspan fill="${theme.muted}" fill-opacity="0.18">${emptyBar}</tspan></text>
@@ -278,18 +282,59 @@ function renderLanguageBar(languages, theme) {
     .join("");
 }
 
+function renderProfileLanguages(languages, theme) {
+  if (languages.length === 0) {
+    return `<text x="520" y="52" class="body" fill="${theme.muted}">(none)</text>`;
+  }
+
+  const renderRow = (row, y) => {
+    const items = row
+      .map(({ name, color }) => {
+        const languageColor = /^#[0-9a-f]{6}$/i.test(color || "") ? color : theme.text;
+        return `<tspan fill="${languageColor}">&quot;${escapeXml(name)}&quot;</tspan>`;
+      })
+      .join(`<tspan fill="${theme.text}"> </tspan>`);
+    return `<text x="520" y="${y}" class="body">${items}</text>`;
+  };
+
+  const rows = [[], [], []];
+  const rowLengths = [0, 0, 0];
+  let rowIndex = 0;
+  for (const language of languages) {
+    const tokenLength = language.name.length + 2 + (rows[rowIndex].length ? 1 : 0);
+    if (rowIndex < rows.length - 1 && rowLengths[rowIndex] + tokenLength > 39) rowIndex += 1;
+    rows[rowIndex].push(language);
+    rowLengths[rowIndex] += tokenLength;
+  }
+
+  return rows.map((row, index) => (row.length ? renderRow(row, 52 + index * 20) : "")).join("");
+}
+
+function renderTuiFrames(theme) {
+  const stroke = `stroke="${theme.muted}" stroke-opacity="0.36" stroke-width="1" fill="none" shape-rendering="crispEdges"`;
+  return `
+    <path d="M 6 30 H 18 M 92 30 H 500 M 500 30 H 512 M 590 30 H 894 V 122 H 6 V 30 M 500 30 V 122" ${stroke} />
+    <text x="24" y="34" class="utility" fill="${theme.cyan}">profile.d</text>
+    <text x="518" y="34" class="utility" fill="${theme.magenta}">languages</text>
+
+    <path d="M 6 154 H 18 M 110 154 H 420 M 420 154 H 430 M 540 154 H 894 V 264 H 6 V 154 M 420 154 V 264" ${stroke} />
+    <text x="24" y="158" class="utility" fill="${theme.yellow}">metrics / 1y</text>
+    <text x="436" y="158" class="utility" fill="${theme.green}">activity / 365d</text>
+
+    <path d="M 6 296 H 18 M 150 296 H 478 V 414 H 6 V 296" ${stroke} />
+    <text x="24" y="300" class="utility" fill="${theme.blue}">languages / commit</text>
+  `;
+}
+
 function renderSvg(data, theme, mode) {
   const safeUsername = escapeXml(username);
   const syncedAt = escapeXml(formatTimestamp(new Date()));
 
   const prompt = (y, command = "", showCursor = false, x = 18) => `<text x="${x}" y="${y}" class="body"><tspan fill="${theme.green}">snowf14k3@github</tspan><tspan fill="${theme.text}">:</tspan><tspan fill="${theme.blue}">~</tspan><tspan fill="${theme.text}">$ ${escapeXml(command)}</tspan>${showCursor ? `<tspan fill="${theme.text}" class="cursor">█</tspan>` : ""}</text>`;
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="430" viewBox="0 0 900 430" role="img" aria-labelledby="title desc">
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="450" viewBox="0 0 900 450" role="img" aria-labelledby="title desc">
   <title id="title">${safeUsername} native shell profile (${mode})</title>
   <desc id="desc">A transparent native shell profile showing interests and live GitHub statistics.</desc>
-  <defs>
-    <clipPath id="avatar-clip"><rect x="18" y="34" width="96" height="96" /></clipPath>
-  </defs>
   <style>
     .body { font-family: "Cascadia Mono", "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace; font-size: 14px; font-variant-ligatures: none; }
     .utility { font-family: "Cascadia Mono", "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace; font-size: 11px; font-variant-ligatures: none; }
@@ -299,28 +344,29 @@ function renderSvg(data, theme, mode) {
   </style>
 
   ${prompt(20, "cat /etc/profile.d/0x0AB8")}
-  <image href="${escapeXml(data.avatar)}" x="18" y="34" width="96" height="96" preserveAspectRatio="xMidYMid slice" clip-path="url(#avatar-clip)" />
-  <text x="132" y="52" class="body" fill="${theme.text}">NAME=<tspan fill="${theme.cyan}">0x0AB8</tspan></text>
-  <text x="132" y="74" class="body" fill="${theme.text}">ROLE=<tspan fill="${theme.blue}">&quot;Full-stack Developer&quot;</tspan></text>
-  <text x="132" y="96" class="body" fill="${theme.text}">FOCUS=<tspan fill="${theme.yellow}">&quot;Learning &amp; Building&quot;</tspan></text>
-  <text x="132" y="118" class="body" fill="${theme.text}">INTERESTS=(<tspan fill="${theme.magenta}">&quot;Reverse Engineering&quot;</tspan>)</text>
+  ${renderTuiFrames(theme).trim()}
+  <text x="18" y="52" class="body" fill="${theme.text}">NAME=<tspan fill="${theme.cyan}">0x0AB8</tspan></text>
+  <text x="18" y="72" class="body" fill="${theme.text}">ROLE=<tspan fill="${theme.blue}">&quot;Full-stack Developer&quot;</tspan></text>
+  <text x="18" y="92" class="body" fill="${theme.text}">FOCUS=<tspan fill="${theme.yellow}">&quot;Learning &amp; Building&quot;</tspan></text>
+  <text x="18" y="112" class="body" fill="${theme.text}">INTERESTS=(<tspan fill="${theme.magenta}">&quot;Reverse Engineering&quot;</tspan>)</text>
+  ${renderProfileLanguages(data.profileLanguages, theme)}
 
-  ${prompt(150, "./profile --stats --since=1y")}
-  <text x="18" y="178" class="body" fill="${theme.text}">${formatNumber(data.contributions)}<tspan fill="${theme.muted}"> contributions</tspan></text>
-  <text x="202" y="178" class="body" fill="${theme.text}">${formatNumber(data.commits)}<tspan fill="${theme.muted}"> commits / 1y</tspan></text>
-  <text x="18" y="199" class="body" fill="${theme.text}">${formatNumber(data.repositories)}<tspan fill="${theme.muted}"> public repos</tspan></text>
-  <text x="202" y="199" class="body" fill="${theme.text}">${formatNumber(data.pullRequests)}<tspan fill="${theme.muted}"> pull requests / 1y</tspan></text>
-  <text x="18" y="220" class="body" fill="${theme.text}">${formatNumber(data.stars)}<tspan fill="${theme.muted}"> stars</tspan></text>
-  <text x="202" y="220" class="body" fill="${theme.text}">${formatNumber(data.issues)}<tspan fill="${theme.muted}"> issues / 1y</tspan></text>
-  <text x="18" y="241" class="body" fill="${theme.text}">${data.joinedYear}<tspan fill="${theme.muted}"> joined GitHub</tspan></text>
-  <text x="202" y="241" class="body" fill="${theme.text}">${formatNumber(data.contributedRepositories)}<tspan fill="${theme.muted}"> contributed repos / 1y</tspan></text>
+  ${prompt(144, "./profile --stats --since=1y")}
+  <text x="18" y="180" class="body" fill="${theme.text}">${formatNumber(data.contributions)}<tspan fill="${theme.muted}"> contributions</tspan></text>
+  <text x="202" y="180" class="body" fill="${theme.text}">${formatNumber(data.commits)}<tspan fill="${theme.muted}"> commits / 1y</tspan></text>
+  <text x="18" y="201" class="body" fill="${theme.text}">${formatNumber(data.repositories)}<tspan fill="${theme.muted}"> public repos</tspan></text>
+  <text x="202" y="201" class="body" fill="${theme.text}">${formatNumber(data.pullRequests)}<tspan fill="${theme.muted}"> pull requests / 1y</tspan></text>
+  <text x="18" y="222" class="body" fill="${theme.text}">${formatNumber(data.stars)}<tspan fill="${theme.muted}"> stars</tspan></text>
+  <text x="202" y="222" class="body" fill="${theme.text}">${formatNumber(data.issues)}<tspan fill="${theme.muted}"> issues / 1y</tspan></text>
+  <text x="18" y="243" class="body" fill="${theme.text}">${data.joinedYear}<tspan fill="${theme.muted}"> joined GitHub</tspan></text>
+  <text x="202" y="243" class="body" fill="${theme.text}">${formatNumber(data.contributedRepositories)}<tspan fill="${theme.muted}"> contributed repos / 1y</tspan></text>
   ${renderContributionCurve(data.weeks, theme)}
 
-  ${prompt(282, "./profile --languages-by-commit")}
+  ${prompt(286, "./profile --languages-by-commit")}
   ${renderLanguageBar(data.languages, theme)}
 
-  ${prompt(420, "", true)}
-  <text x="882" y="420" text-anchor="end" class="utility" fill="${theme.muted}">updated ${syncedAt}</text>
+  ${prompt(440, "", true)}
+  <text x="882" y="440" text-anchor="end" class="utility" fill="${theme.muted}">updated ${syncedAt}</text>
 </svg>
 `;
 }
