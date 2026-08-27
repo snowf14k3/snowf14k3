@@ -268,15 +268,15 @@ function renderLanguageBar(languages, theme) {
   return languages
     .map(({ name, commits, color }, index) => {
       const percent = Math.round((commits / total) * 100);
-      const filled = Math.max(1, Math.round((percent / 100) * 28));
-      const filledBar = "█".repeat(filled);
-      const emptyBar = "█".repeat(28 - filled);
       const languageColor = /^#[0-9a-f]{6}$/i.test(color || "") ? color : theme.green;
       const y = 323 + index * 20;
+      const bar = { x: 145, y: y - 11, width: 228, height: 12 };
+      const filledWidth = Math.max(2, (percent / 100) * bar.width);
       return `
         <text x="18" y="${y}" class="body" fill="${theme.text}">${escapeXml(name)}</text>
-        <text x="145" y="${y}" class="body"><tspan fill="${languageColor}">${filledBar}</tspan><tspan fill="${theme.muted}" fill-opacity="0.18">${emptyBar}</tspan></text>
-        <text x="430" y="${y}" class="body" fill="${theme.muted}">${percent}%</text>
+        <rect x="${bar.x}" y="${bar.y}" width="${bar.width}" height="${bar.height}" fill="${theme.muted}" fill-opacity="0.14" shape-rendering="crispEdges" />
+        <rect x="${bar.x}" y="${bar.y}" width="${filledWidth.toFixed(2)}" height="${bar.height}" fill="${languageColor}" shape-rendering="crispEdges" />
+        <text x="466" y="${y}" text-anchor="end" class="body" fill="${theme.muted}">${percent}%</text>
       `;
     })
     .join("");
