@@ -1,0 +1,54 @@
+name: Render profile status
+
+on:
+  schedule:
+    - cron: "17 3 * * *"
+      timezone: "Asia/Shanghai"
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/profile-status.yml"
+      - "scripts/render-profile.mjs"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: profile-status
+  cancel-in-progress: true
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out profile repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          package-manager-cache: false
+
+      - name: Render live profile SVG
+        env:
+          GH_TOKEN: ${{ secrets.SUMMARY_GITHUB_TOKEN }}
+          PROFILE_USER: ${{ github.repository_owner }}
+        run: node scripts/render-profile.mjs
+
+      - name: Commit changed status
+        shell: bash
+        run: |
+          if git diff --quiet -- assets/profile-light.svg assets/profile-dark.svg; then
+            echo "Profile status is already current."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/profile-light.svg assets/profile-dark.svg
+          git commit -m "chore: refresh profile status"
+          git push
