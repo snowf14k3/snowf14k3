@@ -11,6 +11,8 @@ on:
     paths:
       - ".github/workflows/profile-status.yml"
       - "scripts/render-profile.mjs"
+      - "scripts/terminal-animation.mjs"
+      - "assets/animation/character-frames.json"
 
 permissions:
   contents: write
@@ -42,13 +44,13 @@ jobs:
       - name: Commit changed status
         shell: bash
         run: |
-          if git diff --quiet -- assets/profile-light.svg assets/profile-dark.svg; then
+          git add assets/profile.svg
+          if git diff --cached --quiet -- assets/profile.svg; then
             echo "Profile status is already current."
             exit 0
           fi
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/profile-light.svg assets/profile-dark.svg
           git commit -m "chore: refresh profile status"
           git push

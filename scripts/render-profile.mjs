@@ -1,35 +1,28 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
+import { pathToFileURL } from "node:url";
+import { renderTerminalAnimation, terminalAnimationStyles } from "./terminal-animation.mjs";
 
-const outputPaths = {
-  light: resolve("assets/profile-light.svg"),
-  dark: resolve("assets/profile-dark.svg"),
-};
+const outputPath = resolve("assets/profile.svg");
 const username = process.env.PROFILE_USER || process.env.GITHUB_REPOSITORY_OWNER || "snowf14k3";
 const token = process.env.GH_TOKEN;
 
-const themes = {
-  light: {
-    text: "#24292F",
-    muted: "#57606A",
-    green: "#1A7F37",
-    blue: "#0969DA",
-    cyan: "#0A7B83",
-    yellow: "#9A6700",
-    magenta: "#8250DF",
-    heatmap: ["#EBEDF0", "#9BE9A8", "#40C463", "#30A14E", "#216E39"],
-  },
-  dark: {
-    text: "#C9D1D9",
-    muted: "#8B949E",
-    green: "#3FB950",
-    blue: "#58A6FF",
-    cyan: "#39C5CF",
-    yellow: "#D29922",
-    magenta: "#BC8CFF",
-    heatmap: ["#21262D", "#0E4429", "#006D32", "#26A641", "#39D353"],
-  },
+const colors = {
+  text: ["#24292F", "#C9D1D9"],
+  muted: ["#57606A", "#8B949E"],
+  green: ["#1A7F37", "#3FB950"],
+  blue: ["#0969DA", "#58A6FF"],
+  cyan: ["#0A7B83", "#39C5CF"],
+  yellow: ["#9A6700", "#D29922"],
+  magenta: ["#8250DF", "#BC8CFF"],
 };
+const theme = Object.fromEntries(Object.keys(colors).map((name) => [name, `var(--${name})`]));
+
+export function profileThemeStyles() {
+  const variables = (index) => Object.entries(colors).map(([name, values]) => `--${name}: ${values[index]};`).join(" ");
+  return `:root { color-scheme: light dark; ${variables(0)} }
+    @media (prefers-color-scheme: dark) { :root { ${variables(1)} } }`;
+}
 
 function escapeXml(value) {
   return String(value)
@@ -326,21 +319,23 @@ function renderTuiFrames(theme) {
   `;
 }
 
-function renderSvg(data, theme, mode) {
+export function renderSvg(data) {
   const safeUsername = escapeXml(username);
   const syncedAt = escapeXml(formatTimestamp(new Date()));
 
   const prompt = (y, command = "", showCursor = false, x = 18) => `<text x="${x}" y="${y}" class="body"><tspan fill="${theme.green}">snowf14k3@github</tspan><tspan fill="${theme.text}">:</tspan><tspan fill="${theme.blue}">~</tspan><tspan fill="${theme.text}">$ ${escapeXml(command)}</tspan>${showCursor ? `<tspan fill="${theme.text}" class="cursor">█</tspan>` : ""}</text>`;
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="450" viewBox="0 0 900 450" role="img" aria-labelledby="title desc">
-  <title id="title">${safeUsername} native shell profile (${mode})</title>
-  <desc id="desc">A transparent native shell profile showing interests and live GitHub statistics.</desc>
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="648" viewBox="0 0 900 648" role="img" aria-labelledby="title desc">
+  <title id="title">${safeUsername} native shell profile</title>
+  <desc id="desc">A transparent native shell profile showing interests, live GitHub statistics, and a spinning ASCII Cirno from cirno.gif.</desc>
   <style>
+    ${profileThemeStyles()}
     .body { font-family: "Cascadia Mono", "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace; font-size: 14px; font-variant-ligatures: none; }
     .utility { font-family: "Cascadia Mono", "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace; font-size: 11px; font-variant-ligatures: none; }
     .cursor { animation: blink 1.1s step-end infinite; }
     @keyframes blink { 50% { opacity: 0; } }
     @media (prefers-reduced-motion: reduce) { .cursor { animation: none; } }
+    ${terminalAnimationStyles()}
   </style>
 
   ${prompt(20, "cat /etc/profile.d/0x0AB8")}
@@ -365,16 +360,18 @@ function renderSvg(data, theme, mode) {
   ${prompt(286, "./profile --languages-by-commit")}
   ${renderLanguageBar(data.languages, theme)}
 
-  ${prompt(440, "", true)}
-  <text x="882" y="440" text-anchor="end" class="utility" fill="${theme.muted}">updated ${syncedAt}</text>
+  ${prompt(440, "chafa cirno.gif")}
+  ${renderTerminalAnimation()}
+
+  ${prompt(638, "", true)}
+  <text x="882" y="638" text-anchor="end" class="utility" fill="${theme.muted}">updated ${syncedAt}</text>
 </svg>
 `;
 }
 
-const data = await fetchProfileData();
-
-for (const [mode, outputPath] of Object.entries(outputPaths)) {
-  const svg = renderSvg(data, themes[mode], mode);
+if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.meta.url) {
+  const data = await fetchProfileData();
+  const svg = renderSvg(data);
   await mkdir(dirname(outputPath), { recursive: true });
   await writeFile(outputPath, svg, "utf8");
   console.log(`Rendered ${outputPath} for ${username}.`);
