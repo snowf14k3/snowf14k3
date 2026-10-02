@@ -72,17 +72,17 @@
   <text x="520" y="52" class="body"><tspan fill="#b07219">&quot;Java&quot;</tspan><tspan fill="var(--text)"> </tspan><tspan fill="#3178c6">&quot;TypeScript&quot;</tspan><tspan fill="var(--text)"> </tspan><tspan fill="#00ADD8">&quot;Go&quot;</tspan><tspan fill="var(--text)"> </tspan><tspan fill="#41b883">&quot;Vue&quot;</tspan></text><text x="520" y="72" class="body"><tspan fill="#f1e05a">&quot;JavaScript&quot;</tspan><tspan fill="var(--text)"> </tspan><tspan fill="#4F5D95">&quot;PHP&quot;</tspan><tspan fill="var(--text)"> </tspan><tspan fill="#ff5a03">&quot;Astro&quot;</tspan><tspan fill="var(--text)"> </tspan><tspan fill="#3572A5">&quot;Python&quot;</tspan></text><text x="520" y="92" class="body"><tspan fill="#663399">&quot;CSS&quot;</tspan><tspan fill="var(--text)"> </tspan><tspan fill="#555555">&quot;C&quot;</tspan></text>
 
   <text x="18" y="144" class="body"><tspan fill="var(--green)">snowf14k3@github</tspan><tspan fill="var(--text)">:</tspan><tspan fill="var(--blue)">~</tspan><tspan fill="var(--text)">$ ./profile --stats --since=1y</tspan></text>
-  <text x="18" y="180" class="body" fill="var(--text)">1,379<tspan fill="var(--muted)"> contributions</tspan></text>
-  <text x="202" y="180" class="body" fill="var(--text)">1,304<tspan fill="var(--muted)"> commits / 1y</tspan></text>
+  <text x="18" y="180" class="body" fill="var(--text)">1,405<tspan fill="var(--muted)"> contributions</tspan></text>
+  <text x="202" y="180" class="body" fill="var(--text)">1,330<tspan fill="var(--muted)"> commits / 1y</tspan></text>
   <text x="18" y="201" class="body" fill="var(--text)">13<tspan fill="var(--muted)"> public repos</tspan></text>
   <text x="202" y="201" class="body" fill="var(--text)">24<tspan fill="var(--muted)"> pull requests / 1y</tspan></text>
-  <text x="18" y="222" class="body" fill="var(--text)">32<tspan fill="var(--muted)"> stars</tspan></text>
+  <text x="18" y="222" class="body" fill="var(--text)">33<tspan fill="var(--muted)"> stars</tspan></text>
   <text x="202" y="222" class="body" fill="var(--text)">7<tspan fill="var(--muted)"> issues / 1y</tspan></text>
   <text x="18" y="243" class="body" fill="var(--text)">2020<tspan fill="var(--muted)"> joined GitHub</tspan></text>
-  <text x="202" y="243" class="body" fill="var(--text)">63<tspan fill="var(--muted)"> contributed repos / 1y</tspan></text>
+  <text x="202" y="243" class="body" fill="var(--text)">64<tspan fill="var(--muted)"> contributed repos / 1y</tspan></text>
   
-    <path d="M 435.00 243.00 L 443.52 243.00 L 452.04 241.61 L 460.56 242.54 L 469.08 243.00 L 477.60 243.00 L 486.12 243.00 L 494.63 241.14 L 503.15 233.25 L 511.67 235.57 L 520.19 241.14 L 528.71 236.04 L 537.23 232.32 L 545.75 239.29 L 554.27 243.00 L 562.79 238.36 L 571.31 241.14 L 579.83 237.43 L 588.35 236.96 L 596.87 238.36 L 605.38 233.25 L 613.90 240.21 L 622.42 214.21 L 630.94 232.32 L 639.46 206.32 L 647.98 228.14 L 656.50 214.68 L 665.02 224.43 L 673.54 223.96 L 682.06 217.00 L 690.58 241.61 L 699.10 243.00 L 707.62 242.54 L 716.13 243.00 L 724.65 238.36 L 733.17 243.00 L 741.69 239.75 L 750.21 239.75 L 758.73 243.00 L 767.25 243.00 L 775.77 243.00 L 784.29 229.07 L 792.81 227.21 L 801.33 223.04 L 809.85 227.21 L 818.37 208.18 L 826.88 236.04 L 835.40 192.39 L 843.92 203.54 L 852.44 184.50 L 860.96 178.00 L 869.48 224.43 L 878.00 217.46 L 878.00 243.00 L 435.00 243.00 Z" fill="var(--green)" fill-opacity="0.16" />
-    <path d="M 435.00 243.00 L 443.52 243.00 L 452.04 241.61 L 460.56 242.54 L 469.08 243.00 L 477.60 243.00 L 486.12 243.00 L 494.63 241.14 L 503.15 233.25 L 511.67 235.57 L 520.19 241.14 L 528.71 236.04 L 537.23 232.32 L 545.75 239.29 L 554.27 243.00 L 562.79 238.36 L 571.31 241.14 L 579.83 237.43 L 588.35 236.96 L 596.87 238.36 L 605.38 233.25 L 613.90 240.21 L 622.42 214.21 L 630.94 232.32 L 639.46 206.32 L 647.98 228.14 L 656.50 214.68 L 665.02 224.43 L 673.54 223.96 L 682.06 217.00 L 690.58 241.61 L 699.10 243.00 L 707.62 242.54 L 716.13 243.00 L 724.65 238.36 L 733.17 243.00 L 741.69 239.75 L 750.21 239.75 L 758.73 243.00 L 767.25 243.00 L 775.77 243.00 L 784.29 229.07 L 792.81 227.21 L 801.33 223.04 L 809.85 227.21 L 818.37 208.18 L 826.88 236.04 L 835.40 192.39 L 843.92 203.54 L 852.44 184.50 L 860.96 178.00 L 869.48 224.43 L 878.00 217.46" fill="none" stroke="var(--green)" stroke-width="2" />
+    <path d="M 435.00 243.00 L 443.52 243.00 L 452.04 241.61 L 460.56 242.54 L 469.08 243.00 L 477.60 243.00 L 486.12 243.00 L 494.63 241.14 L 503.15 233.25 L 511.67 235.57 L 520.19 241.14 L 528.71 236.04 L 537.23 232.32 L 545.75 239.29 L 554.27 243.00 L 562.79 238.36 L 571.31 241.14 L 579.83 237.43 L 588.35 236.96 L 596.87 238.36 L 605.38 233.25 L 613.90 240.21 L 622.42 214.21 L 630.94 232.32 L 639.46 206.32 L 647.98 228.14 L 656.50 214.68 L 665.02 224.43 L 673.54 223.96 L 682.06 217.00 L 690.58 241.61 L 699.10 243.00 L 707.62 242.54 L 716.13 243.00 L 724.65 238.36 L 733.17 243.00 L 741.69 239.75 L 750.21 239.75 L 758.73 243.00 L 767.25 243.00 L 775.77 243.00 L 784.29 229.07 L 792.81 227.21 L 801.33 223.04 L 809.85 227.21 L 818.37 208.18 L 826.88 236.04 L 835.40 192.39 L 843.92 203.54 L 852.44 184.50 L 860.96 178.00 L 869.48 224.43 L 878.00 205.39 L 878.00 243.00 L 435.00 243.00 Z" fill="var(--green)" fill-opacity="0.16" />
+    <path d="M 435.00 243.00 L 443.52 243.00 L 452.04 241.61 L 460.56 242.54 L 469.08 243.00 L 477.60 243.00 L 486.12 243.00 L 494.63 241.14 L 503.15 233.25 L 511.67 235.57 L 520.19 241.14 L 528.71 236.04 L 537.23 232.32 L 545.75 239.29 L 554.27 243.00 L 562.79 238.36 L 571.31 241.14 L 579.83 237.43 L 588.35 236.96 L 596.87 238.36 L 605.38 233.25 L 613.90 240.21 L 622.42 214.21 L 630.94 232.32 L 639.46 206.32 L 647.98 228.14 L 656.50 214.68 L 665.02 224.43 L 673.54 223.96 L 682.06 217.00 L 690.58 241.61 L 699.10 243.00 L 707.62 242.54 L 716.13 243.00 L 724.65 238.36 L 733.17 243.00 L 741.69 239.75 L 750.21 239.75 L 758.73 243.00 L 767.25 243.00 L 775.77 243.00 L 784.29 229.07 L 792.81 227.21 L 801.33 223.04 L 809.85 227.21 L 818.37 208.18 L 826.88 236.04 L 835.40 192.39 L 843.92 203.54 L 852.44 184.50 L 860.96 178.00 L 869.48 224.43 L 878.00 205.39" fill="none" stroke="var(--green)" stroke-width="2" />
     <line x1="435" y1="243" x2="878" y2="243" stroke="var(--muted)" stroke-opacity="0.45" />
     <text x="435.00" y="258" text-anchor="start" class="utility" fill="var(--muted)">25/10</text><text x="520.19" y="258" text-anchor="middle" class="utility" fill="var(--muted)">25/12</text><text x="605.38" y="258" text-anchor="middle" class="utility" fill="var(--muted)">26/02</text><text x="690.58" y="258" text-anchor="middle" class="utility" fill="var(--muted)">26/04</text><text x="775.77" y="258" text-anchor="middle" class="utility" fill="var(--muted)">26/07</text><text x="878.00" y="258" text-anchor="end" class="utility" fill="var(--muted)">26/09</text>
   
@@ -96,8 +96,8 @@
       
         <text x="18" y="343" class="body" fill="var(--text)">Java</text>
         <rect x="145" y="332" width="228" height="12" fill="var(--muted)" fill-opacity="0.14" shape-rendering="crispEdges" />
-        <rect x="145" y="332" width="72.96" height="12" fill="#b07219" shape-rendering="crispEdges" />
-        <text x="466" y="343" text-anchor="end" class="body" fill="var(--muted)">32%</text>
+        <rect x="145" y="332" width="70.68" height="12" fill="#b07219" shape-rendering="crispEdges" />
+        <text x="466" y="343" text-anchor="end" class="body" fill="var(--muted)">31%</text>
       
         <text x="18" y="363" class="body" fill="var(--text)">JavaScript</text>
         <rect x="145" y="352" width="228" height="12" fill="var(--muted)" fill-opacity="0.14" shape-rendering="crispEdges" />
@@ -106,8 +106,8 @@
       
         <text x="18" y="383" class="body" fill="var(--text)">TypeScript</text>
         <rect x="145" y="372" width="228" height="12" fill="var(--muted)" fill-opacity="0.14" shape-rendering="crispEdges" />
-        <rect x="145" y="372" width="27.36" height="12" fill="#3178c6" shape-rendering="crispEdges" />
-        <text x="466" y="383" text-anchor="end" class="body" fill="var(--muted)">12%</text>
+        <rect x="145" y="372" width="29.64" height="12" fill="#3178c6" shape-rendering="crispEdges" />
+        <text x="466" y="383" text-anchor="end" class="body" fill="var(--muted)">13%</text>
       
         <text x="18" y="403" class="body" fill="var(--text)">Shell</text>
         <rect x="145" y="392" width="228" height="12" fill="var(--muted)" fill-opacity="0.14" shape-rendering="crispEdges" />
@@ -157,5 +157,5 @@
   </g>
 
   <text x="18" y="638" class="body"><tspan fill="var(--green)">snowf14k3@github</tspan><tspan fill="var(--text)">:</tspan><tspan fill="var(--blue)">~</tspan><tspan fill="var(--text)">$ </tspan><tspan fill="var(--text)" class="cursor">█</tspan></text>
-  <text x="882" y="638" text-anchor="end" class="utility" fill="var(--muted)">updated 2026-10-02 07:13 UTC+8</text>
+  <text x="882" y="638" text-anchor="end" class="utility" fill="var(--muted)">updated 2026-10-03 06:59 UTC+8</text>
 </svg>
