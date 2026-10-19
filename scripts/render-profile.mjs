@@ -211,11 +211,41 @@ async function fetchProfileData() {
   };
 }
 
-function straightPath(points) {
-  if (points.length < 2) return "";
-  return points
-    .map(({ x, y }, index) => `${index === 0 ? "M" : "L"} ${x.toFixed(2)} ${y.toFixed(2)}`)
-    .join(" ");
+export function smoothPath(points) {
+  if (points.length === 0) return "";
+  const path = [`M ${points[0].x.toFixed(2)} ${points[0].y.toFixed(2)}`];
+  if (points.length === 1) return path[0];
+
+  const slopes = points.slice(1).map((point, index) =>
+    (point.y - points[index].y) / (point.x - points[index].x),
+  );
+  const tangents = points.map((point, index) => {
+    if (index === 0) return slopes[0];
+    if (index === points.length - 1) return slopes.at(-1);
+    const before = slopes[index - 1];
+    const after = slopes[index];
+    if (before * after <= 0) return 0;
+
+    const previousWidth = point.x - points[index - 1].x;
+    const nextWidth = points[index + 1].x - point.x;
+    const previousWeight = 2 * nextWidth + previousWidth;
+    const nextWeight = nextWidth + 2 * previousWidth;
+    return (previousWeight + nextWeight) / (previousWeight / before + nextWeight / after);
+  });
+
+  for (let index = 1; index < points.length; index += 1) {
+    const previous = points[index - 1];
+    const current = points[index];
+    const controlWidth = (current.x - previous.x) / 3;
+    path.push(`C ${(previous.x + controlWidth).toFixed(2)} ${(previous.y + tangents[index - 1] * controlWidth).toFixed(2)} ${(current.x - controlWidth).toFixed(2)} ${(current.y - tangents[index] * controlWidth).toFixed(2)} ${current.x.toFixed(2)} ${current.y.toFixed(2)}`);
+  }
+  return path.join(" ");
+}
+
+export function profileChartStyles() {
+  return `.language-fill { transform-box: fill-box; transform-origin: left center; animation: language-fill 1.2s cubic-bezier(0.22, 1, 0.36, 1) both; }
+    @keyframes language-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+    @media (prefers-reduced-motion: reduce) { .language-fill { animation: none; transform: none; } }`;
 }
 
 function renderContributionCurve(weeks, theme) {
@@ -228,7 +258,7 @@ function renderContributionCurve(weeks, theme) {
     x: chart.x + (index / Math.max(1, weeklyTotals.length - 1)) * chart.width,
     y: chart.y + chart.height - (total / maximum) * chart.height,
   }));
-  const line = straightPath(points);
+  const line = smoothPath(points);
   const area = `${line} L ${points.at(-1).x.toFixed(2)} ${(chart.y + chart.height).toFixed(2)} L ${points[0].x.toFixed(2)} ${(chart.y + chart.height).toFixed(2)} Z`;
   const labelIndexes = [0, 10, 20, 30, 40, weeks.length - 1].filter(
     (index, position, indexes) => index >= 0 && index < weeks.length && indexes.indexOf(index) === position,
@@ -246,7 +276,7 @@ function renderContributionCurve(weeks, theme) {
 
   return `
     <path d="${area}" fill="${theme.green}" fill-opacity="0.16" />
-    <path d="${line}" fill="none" stroke="${theme.green}" stroke-width="2" />
+    <path d="${line}" fill="none" stroke="${theme.green}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
     <line x1="${chart.x}" y1="${chart.y + chart.height}" x2="${chart.x + chart.width}" y2="${chart.y + chart.height}" stroke="${theme.muted}" stroke-opacity="0.45" />
     ${labels}
   `;
@@ -268,7 +298,7 @@ function renderLanguageBar(languages, theme) {
       return `
         <text x="18" y="${y}" class="body" fill="${theme.text}">${escapeXml(name)}</text>
         <rect x="${bar.x}" y="${bar.y}" width="${bar.width}" height="${bar.height}" fill="${theme.muted}" fill-opacity="0.14" shape-rendering="crispEdges" />
-        <rect x="${bar.x}" y="${bar.y}" width="${filledWidth.toFixed(2)}" height="${bar.height}" fill="${languageColor}" shape-rendering="crispEdges" />
+        <rect x="${bar.x}" y="${bar.y}" width="${filledWidth.toFixed(2)}" height="${bar.height}" fill="${languageColor}" shape-rendering="crispEdges" class="language-fill" style="animation-delay: ${index * 120}ms" />
         <text x="466" y="${y}" text-anchor="end" class="body" fill="${theme.muted}">${percent}%</text>
       `;
     })
@@ -335,6 +365,7 @@ export function renderSvg(data) {
     .cursor { animation: blink 1.1s step-end infinite; }
     @keyframes blink { 50% { opacity: 0; } }
     @media (prefers-reduced-motion: reduce) { .cursor { animation: none; } }
+    ${profileChartStyles()}
     ${terminalAnimationStyles()}
   </style>
 
